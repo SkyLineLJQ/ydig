@@ -1,0 +1,22 @@
+.userArea{
+    height: 100%;
+    width: 25%;
+    border-right: 1px dashed #333333;
+}
+.roobotsArea{
+    height: 100%;
+    width: 25%;
+    border-left: 1px dashed #333333
+}
+.publicArea{
+    height: 100%;
+    width: 50%;
+    margin-top: 15%;
+    flex: 1;
+}
+.user-card{
+    margin-top: 40%;
+}
+.button-number{
+    padding: 10px;
+}
