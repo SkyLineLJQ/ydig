@@ -2,25 +2,35 @@ p {
     color: #333333;
     text-align: left;
 }
-.userArea{
+
+.userArea {
     height: 100%;
     width: 25%;
-    border-right: 1px dashed #333333;
+    border-right: 1px dashed#666666;
 }
-.roobotsArea{
+
+.roobotsArea {
     height: 100%;
     width: 25%;
-    border-left: 1px dashed #333333
+    border-left: 1px dashed #666666
 }
-.publicArea{
+
+.publicArea {
     height: auto;
     width: 50%;
     margin-top: 6%;
     flex: 1;
 }
-.user-card{
+
+.user-card {
     margin-top: 40%;
 }
-.button-number{
+
+.button-number {
     padding: 10px;
+}
+
+.progress {
+    display: flex;
+    justify-content: center;
 }

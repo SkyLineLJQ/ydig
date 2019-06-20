@@ -9,7 +9,7 @@
       <div class="userArea">
         <el-card class="box-card user-card">
           <div slot="header" class="clearfix">
-            <span>Your Tray</span>
+            <span>玩家计分板</span>
             <label style="float: right; padding: 3px 0" type="text">总分:{{sumUser}}</label>
           </div>
           <div class="text item">
@@ -20,6 +20,7 @@
                 </template>
               </span>
             </el-main>
+            <el-progress type="circle" :percentage="percentUser" class="progress"></el-progress>
           </div>
         </el-card>
       </div>
@@ -27,43 +28,59 @@
         <!-- 规则说明-->
         <div class="helpRules">
           <label>游戏规则:</label>
-          <p>游戏由玩家和机器人(Robot)参与,桌面上有0~9编号的10个小球，玩家和机器人轮流从桌面上取走小球放入自己的区域中，得分大的获胜。
-          </p>
-          <p style="color: #FF0033;text-align:center"># 玩家和机器人在第一次取走小球后可以放弃从桌面上取球的机会，获得弃掉对方盒子中的一个小球</p>
+          <p>游戏由玩家和机器人(Robot)参与,桌面上有0~9编号的10个小球，玩家和机器人轮流从桌面上取走小球放入自己的区域中，得分大的获胜。</p>
+          <p style="color: #EA0B0B;text-align:center"># 玩家和机器人在第一次取走小球后可以放弃从桌面上取球的机会，获得弃掉对方盒子中的一个小球</p>
         </div>
-        <el-button type="primary" @click="startGame()" style="width:75%;margin: 0 auto" v-loading="noMoreClick"
-          v-show="!startFlag">Let's Go!</el-button>
+        <el-button
+          type="primary"
+          @click="startGame()"
+          style="width:75%;margin: 0 auto"
+          v-loading="noMoreClick"
+          v-show="!startFlag"
+        >Let's Go!</el-button>
         <span v-for="item in Options" :key="item" class="button-number">
           <template>
-            <el-button type="warning" icon="el-icon-star-on" circle @click="handleGetBallValue(item)" v-if="startFlag">
-            </el-button>
+            <el-button
+              type="warning"
+              icon="el-icon-star-on"
+              circle
+              @click="handleGetBallValue(item)"
+              v-if="startFlag"
+            ></el-button>
           </template>
         </span>
       </el-main>
       <div class="roobotsArea">
         <el-card class="box-card user-card">
           <div slot="header" class="clearfix">
-            <span>Robot's Tray</span>
+            <span>机器人计分板</span>
             <label style="float: right; padding: 3px 0" type="text">总分:{{sumRobot}}</label>
           </div>
           <div class="text item">
             <el-main style="text-align: center;">
               <span v-for="item in robotValue" :key="item" class="button-number">
                 <template>
-                  <el-button type="info" icon="el-icon-star-off" circle></el-button>
+                  <el-button type="info" icon="el-icon-star-off" @click="removeRobot(item)" circle></el-button>
                 </template>
               </span>
             </el-main>
+            <el-progress type="circle" :percentage="percentRobot" class="progress"></el-progress>
           </div>
         </el-card>
       </div>
     </main>
-    <el-dialog title="请选择机器人等级" :visible.sync="DialogVisible" width="30%" center :close-on-click-modal="false"
-      @close="DialogVisible = false,noMoreClick = false">
+    <el-dialog
+      title="请选择机器人等级"
+      :visible.sync="DialogVisible"
+      width="30%"
+      center
+      :close-on-click-modal="false"
+      @close="DialogVisible = false,noMoreClick = false"
+    >
       <el-radio-group v-model="robotClass" size="small" style="margin-left: 15%">
         <el-radio label="ZZ" border>智障</el-radio>
-        <el-radio label="PT" border >普通</el-radio>
-        <el-radio label="AI" border >AI</el-radio>
+        <el-radio label="PT" border>普通</el-radio>
+        <el-radio label="AI" border>AI</el-radio>
       </el-radio-group>
 
       <span slot="footer" class="dialog-footer">
@@ -75,128 +92,131 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
-  import { handleRobot } from '../utils/game1'
+import { mapGetters } from "vuex";
+import { handleRobot, isAllowedDel } from "../utils/game1";
 
-  export default {
-    name: "",
-    data() {
-      return {
-        Options: [],
-        userValue: [], // 用户拿分的数组
-        robotValue: [], //机器人得分的数组
-        sumUser: 0,
-        sumRobot: 0,
-        startFlag: false,
-        noMoreClick: false,
-        DialogVisible: false,
-        robotClass: '' // 机器人等级
-      };
+export default {
+  name: "Game1",
+  data() {
+    return {
+      Options: [],
+      userValue: [], // 用户拿分的数组
+      robotValue: [], //机器人得分的数组
+      sumUser: 0,
+      sumRobot: 0,
+      startFlag: false,
+      noMoreClick: false,
+      DialogVisible: false,
+      robotClass: "", // 机器人等级
+      percentUser: 0,
+      percentRobot: 0
+    };
+  },
+  created() {},
+  mounted() {
+    let self = this;
+    // 初始化小球数据
+    self.initBalls();
+  },
+  computed: {
+    ...mapGetters(["isAllowedAction"])
+  },
+  watch: {
+    sumUser: function(val, oldVal) {
+      this.percentUser = Math.floor((val * 100) / 35);
     },
-    created() {},
-    mounted() {
+    sumRobot: function(val, oldVal) {
+      this.percentRobot = Math.floor((val * 100) / 35);
+    }
+  },
+  components: {},
+  methods: {
+    initBalls() {
       let self = this;
-      // 初始化小球数据
-      self.initBalls();
-    },
-    computed: {
-      ...mapGetters(["isAllowedAction"])
-    },
-    components: {},
-    methods: {
-      initBalls() {
-        let self = this;
-        self.userValue = []
-        self.robotValue = []
-        self.sumUser = self.sumRobot = 0
-        self.startFlag = false
-        self.robotClass = ''
-        while (self.Options.length != 10) {
-          let key = Math.floor(Math.random() * 10);
-          if (!self.Options.includes(key)) {
-            self.Options.push(key);
-          }
+      self.userValue = [];
+      self.robotValue = [];
+      self.sumUser = self.sumRobot = 0;
+      self.startFlag = false;
+      self.robotClass = "";
+      while (self.Options.length != 10) {
+        let key = Math.floor(Math.random() * 10);
+        if (!self.Options.includes(key)) {
+          self.Options.push(key);
         }
-      },
-      handleGetBallValue(val) {
-        let self = this;
-        if (self.isAllowedAction) {
-          self.hanldeUserClick(val); // 人取球
-        }
-      },
-      hanldeUserClick(val) {
-        let self = this;
-        self.userValue.push(val);
-        let index = self.Options.findIndex((value, index, arr) => {
+      }
+    },
+    handleGetBallValue(val) {
+      let self = this;
+      if (self.isAllowedAction) {
+        self.hanldeUserClick(val); // 人取球
+      }
+    },
+    hanldeUserClick(val) {
+      let self = this;
+      self.userValue.push(val);
+      let index = self.Options.findIndex((value, index, arr) => {
+        return val === value;
+      });
+      self.Options.splice(index, 1);
+      self.sumUser += val;
+      // 设置机器人操作状态
+      self.$store.commit("setIsAllowedAction", false);
+      setTimeout(() => {
+        handleRobot(self.robotClass, self);
+      }, 1000);
+    },
+
+    startGame() {
+      let self = this;
+      self.noMoreClick = true;
+      self.DialogVisible = true;
+    },
+    setRobot() {
+      let self = this;
+      setTimeout(() => {
+        self.startFlag = true;
+        self.noMoreClick = false;
+        self.DialogVisible = false;
+      }, 500);
+      handleRobot(self.robotClass, self);
+    },
+    removeRobot(val) {
+      let self = this;
+      if (isAllowedDel(self, "USER")) {
+        self.sumRobot -= val;
+        let index = self.robotValue.findIndex((value, index, arr) => {
           return val === value;
         });
-        self.Options.splice(index, 1);
-        self.sumUser += val;
-        // 设置机器人操作状态
+        self.robotValue.splice(index, 1);
         self.$store.commit("setIsAllowedAction", false);
         setTimeout(() => {
-          handleRobot(self.robotClass,self)
+          handleRobot(self.robotClass, self);
         }, 1000);
-        self.isGameEnd()
-      },
-      /**
-       * @description: 判断游戏是否结束
-       * @param {type}
-       * @return:
-       */
-      isGameEnd() {
-        let self = this;
-        if (self.Options.length === 0) {
-          let text = self.sumUser > self.sumRobot ? '恭喜你赢了~' : '很遗憾你输了!'
-          self.$confirm(text, "游戏结束", {
-            confirmButtonText: "确定",
-            center: true,
-            showCancelButton: false,
-            closeOnClickModal: false,
-            type: 'success'
-          }).then(() => {
-            // 重置游戏
-            self.initBalls()
-          }).catch(() => {
-            console.log('你还会来玩的~');
-          });
-        }
-      },
-      startGame() {
-        let self = this
-        self.noMoreClick = true
-        self.DialogVisible = true
-      },
-      setRobot() {
-        let self = this
-        setTimeout(() => {
-          self.startFlag = true
-          self.noMoreClick = false
-          self.DialogVisible = false
-        }, 500);
-        handleRobot(self.robotClass,self)
+      } else {
+        self.$message.error("这是最后一个小球，您不能移除它~");
       }
     }
-  };
+  }
+};
 </script>
 
 <style scoped lang="scss">
-  @import "../assets/css/Game1.scss";
-  @import "../assets/svg/font/iconfont.css";
+@import "../assets/css/Game1.scss";
+@import "../assets/svg/font/iconfont.css";
 
-  .app {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    margin-top: 1%;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom right, #50a3a2, #53e3a6);
-  }
+.app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  margin-top: 1%;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #50a3a2, #53e3a6);
+}
 
-  .container {
-    width: 100%;
-    height: 700px;
-    display: flex;
-  }
+.container {
+  width: 100%;
+  height: 700px;
+  display: flex;
+}
 </style>
