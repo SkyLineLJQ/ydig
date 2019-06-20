@@ -24,9 +24,19 @@
         </el-card>
       </div>
       <el-main style="text-align: center;" class="publicArea">
+        <!-- 规则说明-->
+        <div class="helpRules">
+          <label>游戏规则:</label>
+          <p>游戏由玩家和机器人(Robot)参与,桌面上有0~9编号的10个小球，玩家和机器人轮流从桌面上取走小球放入自己的区域中，得分大的获胜。
+          </p>
+          <p style="color: #FF0033;text-align:center"># 玩家和机器人在第一次取走小球后可以放弃从桌面上取球的机会，获得弃掉对方盒子中的一个小球</p>
+        </div>
+        <el-button type="primary" @click="startGame()" style="width:75%;margin: 0 auto" v-loading="noMoreClick"
+          v-show="!startFlag">Let's Go!</el-button>
         <span v-for="item in Options" :key="item" class="button-number">
           <template>
-            <el-button type="warning" icon="el-icon-star-on" circle @click="handleGetBallValue(item)"></el-button>
+            <el-button type="warning" icon="el-icon-star-on" circle @click="handleGetBallValue(item)" v-if="startFlag">
+            </el-button>
           </template>
         </span>
       </el-main>
@@ -48,13 +58,25 @@
         </el-card>
       </div>
     </main>
+    <el-dialog title="请选择机器人等级" :visible.sync="DialogVisible" width="30%" center :close-on-click-modal="false"
+      @close="DialogVisible = false,noMoreClick = false">
+      <el-radio-group v-model="robotClass" size="small" style="margin-left: 15%">
+        <el-radio label="ZZ" border>智障</el-radio>
+        <el-radio label="PT" border >普通</el-radio>
+        <el-radio label="AI" border >AI</el-radio>
+      </el-radio-group>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="DialogVisible = false,noMoreClick = false">取 消</el-button>
+        <el-button type="primary" @click="setRobot" :disabled="robotClass == '' ">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {
-    mapGetters
-  } from "vuex";
+  import { mapGetters } from "vuex";
+  import { handleRobot } from '../utils/game1'
 
   export default {
     name: "",
@@ -64,7 +86,11 @@
         userValue: [], // 用户拿分的数组
         robotValue: [], //机器人得分的数组
         sumUser: 0,
-        sumRobot: 0
+        sumRobot: 0,
+        startFlag: false,
+        noMoreClick: false,
+        DialogVisible: false,
+        robotClass: '' // 机器人等级
       };
     },
     created() {},
@@ -83,6 +109,8 @@
         self.userValue = []
         self.robotValue = []
         self.sumUser = self.sumRobot = 0
+        self.startFlag = false
+        self.robotClass = ''
         while (self.Options.length != 10) {
           let key = Math.floor(Math.random() * 10);
           if (!self.Options.includes(key)) {
@@ -107,17 +135,8 @@
         // 设置机器人操作状态
         self.$store.commit("setIsAllowedAction", false);
         setTimeout(() => {
-          self.handleRobotClick();
+          handleRobot(self.robotClass,self)
         }, 1000);
-        self.isGameEnd()
-      },
-      handleRobotClick() {
-        let self = this;
-        let index = Math.floor(Math.random() * 10) % self.Options.length;
-        self.robotValue.push(self.Options[index]);
-        self.sumRobot += self.Options[index];
-        self.Options.splice(index, 1);
-        self.$store.commit("setIsAllowedAction", true);
         self.isGameEnd()
       },
       /**
@@ -133,12 +152,29 @@
             confirmButtonText: "确定",
             center: true,
             showCancelButton: false,
+            closeOnClickModal: false,
             type: 'success'
-          }).then(()=>{
+          }).then(() => {
             // 重置游戏
             self.initBalls()
+          }).catch(() => {
+            console.log('你还会来玩的~');
           });
         }
+      },
+      startGame() {
+        let self = this
+        self.noMoreClick = true
+        self.DialogVisible = true
+      },
+      setRobot() {
+        let self = this
+        setTimeout(() => {
+          self.startFlag = true
+          self.noMoreClick = false
+          self.DialogVisible = false
+        }, 500);
+        handleRobot(self.robotClass,self)
       }
     }
   };

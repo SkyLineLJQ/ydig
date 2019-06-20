@@ -1,3 +1,7 @@
+p {
+    color: #333333;
+    text-align: left;
+}
 .userArea{
     height: 100%;
     width: 25%;
@@ -9,9 +13,9 @@
     border-left: 1px dashed #333333
 }
 .publicArea{
-    height: 100%;
+    height: auto;
     width: 50%;
-    margin-top: 15%;
+    margin-top: 6%;
     flex: 1;
 }
 .user-card{
