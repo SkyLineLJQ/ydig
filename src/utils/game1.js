@@ -1,6 +1,8 @@
 /**
  * 选择机器人模式后的操作
  */
+import ConsolePrintLog from './consoleLog'
+
 let aiValue = 0 //AI 拿到桌面小球的当前值
 
 export function handleRobot(robotClass, self) {
@@ -115,12 +117,21 @@ function technologyRun(self) {
  * @return:
  */
 export function isGameEnd(self) {
-    setTimeout(() => {
-        if (self.Options.length === 0) {
-            let text =
-                self.sumUser > self.sumRobot ? "恭喜你赢了~" : "很遗憾你输了!";
-            self
-                .$confirm(text, "游戏结束", {
+    let text =
+        self.sumUser > self.sumRobot ? "恭喜你赢了~" : "很遗憾你输了!";
+    if (self.Options.length === 0) {
+        setTimeout(() => {
+            const h = self.$createElement;
+            self.$confirm(text, "游戏结束", {
+                    title: '游戏结束',
+                    message: h('p', null, [
+                        h('p', {
+                            style: 'text-align: center'
+                        }, text),
+                        h('p', {
+                            style: 'color: teal;text-align: center'
+                        }, self.sumUser + ' : ' + self.sumRobot),
+                    ]),
                     confirmButtonText: "确定",
                     center: true,
                     showCancelButton: false,
@@ -132,9 +143,9 @@ export function isGameEnd(self) {
                     self.initBalls();
                 })
                 .catch(() => {
-                    console.log("你还会来玩的~");
+                    console.log("看我这么萌,你还会来玩的~");
+                    ConsolePrintLog.printPiKaQiuLog()
                 });
-        }
-    }, 800);
+        }, 800);
+    }
 }
-
