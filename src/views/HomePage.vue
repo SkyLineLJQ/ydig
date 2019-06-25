@@ -62,7 +62,7 @@ export default {
         let self = this
         console.log(self.loginForm)
         //TODO: 调用登录接口
-        self.$router.push({path:"/Game1"})
+        self.$router.push({path:"/SingleSocket"})
     }
   }
 };

@@ -1,0 +1,60 @@
+.socket_body {
+    min-height: 600px;
+    max-width: 99%;
+    margin: 1% auto;
+  }
+  
+  .socket_aside {
+    background-color: #dff1db;
+    text-align: center;
+  }
+  
+  .socket_head {
+    background-color: #DDDDDD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #AAAAAA;
+  }
+  
+  .socket_main {
+    background-color: #DDDDDD;
+  }
+  
+  .socket_foot {
+    background-color: #DDDDDD;
+    border-top: 1px solid #AAAAAA;
+  }
+  .avatar{
+      width: 100px;
+      height: 100px;
+  }
+  .userNameLabel{
+      border-bottom: 1px dashed #c7d6c1;
+      display: block;
+      padding-bottom: 4%
+  }
+  .friendsNameLabel{
+    vertical-align: top;
+    line-height: 70px;
+    margin-left: 5px;
+  }
+  .friendsList{
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      border-bottom: 1px solid #c7d6c1;
+      padding: 10px 0;
+      margin: 0 10px 0 10px;
+  }
+  .unReadMessage{
+      margin-left: 10px;
+  }
+  #slot_send{
+    background: #007373;
+    border-color: #007373;
+    color: #FFFFFF;
+  }
+  .sendContext{
+      margin-top: 5px;
+  }
