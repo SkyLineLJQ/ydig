@@ -1,43 +1,56 @@
-<script>
-import { actions } from "../store";
-
-import Card from "../components/chat/card";
-import List from "../components/chat/list";
-import Text from "../components/chat/text";
-import Message from "../components/chat/message";
-
-export default {
-  components: {
-    Card,
-    List,
-    Text,
-    Message
-  },
-  vuex: {
-    actions: actions
-  },
-  created() {
-    this.initData();
-  },
-  methods: {}
-};
-</script>
-
 <template>
-  <div id="app">
+  <div id="chat">
     <div class="sidebar">
-      <card></card>
-      <list></list>
+      <Card></Card>
+      <List></List>
     </div>
     <div class="main">
-      <message></message>
-      <text></text>
+      <Message></Message>
+      <Context></Context>
     </div>
   </div>
 </template>
 
+<script>
+import Card from "../components/chat/Card";
+import List from "../components/chat/List";
+import Context from "../components/chat/Context";
+import Message from "../components/chat/Message";
+
+export default {
+  // components: {
+  //   Card,
+  //   List,
+  //   Context,
+  //   Message
+  // },
+  components: {
+    Card: resolve => {
+      require(["../components/chat/Card"], resolve);
+    },
+    List: resolve => {
+      require(["../components/chat/List"], resolve);
+    },
+    Message: resolve => {
+      require(["../components/chat/Message"], resolve);
+    },
+    Context: resolve => {
+      require(["../components/chat/Context"], resolve);
+    }
+  },
+  created() {
+    this.initData();
+  },
+  methods: {
+    initData() {
+      let self = this;
+    }
+  }
+};
+</script>
+
 <style lang="less" scoped>
-#app {
+#chat {
   margin: 20px auto;
   width: 800px;
   height: 600px;

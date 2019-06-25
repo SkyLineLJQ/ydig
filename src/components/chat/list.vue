@@ -1,57 +1,48 @@
+<template>
+  <div class="list">
+    <ul>
+      <li :class="{ active: 'true' }">
+        <img class="avatar" width="30" height="30" src="../../assets/imgs/1.jpg">
+        <p class="name">这是测试的</p>
+      </li>
+    </ul>
+  </div>
+</template>
+
 <script>
-import { actions } from '../../store';
+import { mapGetters } from "vuex";
 
 export default {
-    vuex: {
-        actions: actions,
-        getters: {
-            // 过滤后的会话列表
-            sessions: ({ sessions, filterKey }) => {
-                let result = sessions.filter(session => session.user.name.includes(filterKey));
-                return result;
-            },
-            // 当前会话index
-            currentId: ({ currentSessionId }) => currentSessionId
-        }
-    }
+  name: "List",
+  computed: {}
 };
 </script>
 
-<template>
-<div class="list">
-    <ul>
-        <li v-for="item in sessions" :class="{ active: item.id === currentId }" @click="selectSession(item.id)">
-            <img class="avatar"  width="30" height="30" :alt="item.user.name" :src="item.user.img">
-            <p class="name">{{item.user.name}}</p>
-        </li>
-    </ul>
-</div>
-</template>
-
 <style scoped lang="less">
 .list {
-    li {
-        padding: 12px 15px;
-        border-bottom: 1px solid #292C33;
-        cursor: pointer;
-        transition: background-color .1s;
+  li {
+    padding: 12px 15px;
+    border-bottom: 1px solid #292c33;
+    cursor: pointer;
+    transition: background-color 0.1s;
 
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.03);
-        }
-        &.active {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.03);
     }
-    .avatar, .name {
-        vertical-align: middle;
+    &.active {
+      background-color: rgba(255, 255, 255, 0.1);
     }
-    .avatar {
-        border-radius: 2px;
-    }
-    .name {
-        display: inline-block;
-        margin: 0 0 0 15px;
-    }
+  }
+  .avatar,
+  .name {
+    vertical-align: middle;
+  }
+  .avatar {
+    border-radius: 2px;
+  }
+  .name {
+    display: inline-block;
+    margin: 0 0 0 15px;
+  }
 }
 </style>
