@@ -61,8 +61,9 @@ export default {
     toLogin() {
         let self = this
         console.log(self.loginForm)
+        self.$store.commit('setUserInfo',self.loginForm)
         //TODO: 调用登录接口
-        self.$router.push({path:"/SingleSocket"})
+        self.$router.push({path:"/Chat"})
     }
   }
 };

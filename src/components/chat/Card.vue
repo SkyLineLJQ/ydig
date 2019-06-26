@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <header>
-      <img class="avatar" width="40" height="40" src="../../assets/imgs/2.png">
-      <p class="name">嗯嗯啊</p>
+      <img class="avatar" width="40" height="40" :alt="user.name" src="../../assets/imgs/2.png">
+      <p class="name">{{user.name}}</p>
     </header>
     <footer>
       <input class="search" type="text" placeholder="search user..." @keyup="onKeyup">
@@ -15,7 +15,9 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Card",
-  computed: {},
+  computed: {
+    ...mapGetters(['user'])
+  },
   methods: {
     onKeyup(e) {
       console.log(e.target.value);

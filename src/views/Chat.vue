@@ -18,12 +18,7 @@ import Context from "../components/chat/Context";
 import Message from "../components/chat/Message";
 
 export default {
-  // components: {
-  //   Card,
-  //   List,
-  //   Context,
-  //   Message
-  // },
+  name: "Chat",
   components: {
     Card: resolve => {
       require(["../components/chat/Card"], resolve);
@@ -38,14 +33,8 @@ export default {
       require(["../components/chat/Context"], resolve);
     }
   },
-  created() {
-    this.initData();
-  },
-  methods: {
-    initData() {
-      let self = this;
-    }
-  }
+  created() {},
+  methods: {}
 };
 </script>
 
