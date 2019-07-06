@@ -5,6 +5,10 @@
 </template>
 
 <script>
+  import {
+    socket
+  } from '../../main'
+
   export default {
     name: "Context",
     data() {
@@ -17,22 +21,23 @@
         let self = this
         if (e.ctrlKey && e.keyCode === 13 && this.content.length) {
           let promise = new Promise(function (resove, reject) {
-            if(self.sendMessage(self.content)){
+            if (self.sendMessage(self.content)) {
               resove(true)
-            }else {
+            } else {
               reject(e)
             }
           })
-          promise.then((success)=>{
+          promise.then((success) => {
             self.content = ''
-          },(fail)=>{
+          }, (fail) => {
             console.log(fail);
           })
         }
       },
       sendMessage(message) {
         let self = this
-        self.$store.commit('sendMessage',message)
+        self.$store.commit('sendMessage', message)
+        socket.emit('chat message', message);
         return true
       }
     }

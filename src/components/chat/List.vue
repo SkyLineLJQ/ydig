@@ -1,10 +1,11 @@
 <template>
   <div class="list">
+    <span v-show="false">{{sessions}}</span>
     <ul>
-      <li v-for="item in sessions" :key="item.id" :class="{ active: item.id === currentId } "
-        @click="selectSession(item.id)">
-        <img class="avatar" width="30" height="30" :src="item.user.img" :alt="item.user.name">
-        <p class="name">{{item.user.name}} </p>
+      <li v-for="item in sessions" :key="item.socketId" :class="{ active: item.socketId === currentId } "
+        @click="selectSession(item.socketId)" v-if="item.socketId != user.socketId">
+        <img class="avatar" width="30" height="30" :src="item.img" :alt="item.userName">
+        <p class="name">{{item.userName}} </p>
       </li>
     </ul>
   </div>
@@ -18,10 +19,18 @@
   export default {
     name: "List",
     computed: {
-      ...mapGetters(["sessions", "currentId"])
+      ...mapGetters(["currentId",'sessions']),
     },
     data() {
-      return {};
+      return {
+        socketId: "",
+        user: {}
+      };
+    },
+    mounted() {
+      let self = this;
+      this.getUser()
+      //添加socket事件监听
     },
     methods: {
       /**
@@ -31,7 +40,18 @@
        */
       selectSession(val) {
         let self = this;
-        self.$store.commit("setCurrentSessionId", val);
+        self.$store.commit("setCurrentId", val);
+      },
+      getUser() {
+        let self = this
+        let socketId = localStorage.getItem('userInfo')
+        let node = ''
+        if (socketId) {
+          node = self.sessions.find((value, index, arr) => {
+            return value.socketId == socketId
+          })
+          self.user = node
+        }
       }
     }
   };

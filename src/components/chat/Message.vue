@@ -1,6 +1,6 @@
 <template>
   <div class="message" v-scroll-bottom>
-    <ul>
+    <!-- <ul>
       <li v-for="(item,index) in session.messages" :key="index">
         <p class="time">
           <span>{{ item.date | time }}</span>
@@ -10,7 +10,7 @@
           <div class="text">{{ item.content }}</div>
         </div>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -22,11 +22,11 @@
   export default {
     name: "Message",
     computed: {
-      ...mapGetters(['sessions', 'currentId']),
-      session: function () {
-        let result = this.sessions.find(value => value.id === this.currentId)
-        return result
-      }
+      // ...mapGetters(['sessions', 'currentId']),
+      // session: function () {
+      //   let result = this.sessions.find(value => value.id === this.currentId)
+      //   return result
+      // }
     },
     filters: {
       time(date) {

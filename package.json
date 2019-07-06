@@ -11,8 +11,10 @@
     "core-js": "^2.6.5",
     "element-ui": "^2.4.5",
     "happypack": "^5.0.1",
+    "sessionstorage": "^0.1.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue-socket.io": "^3.0.7",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -28,7 +30,9 @@
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
     "vue-cli-plugin-element": "^1.0.1",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "express": "^4.15.3",
+    "socket.io": "^2.0.2"
   },
   "eslintConfig": {
     "root": true,

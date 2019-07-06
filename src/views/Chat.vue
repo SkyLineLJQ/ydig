@@ -16,6 +16,7 @@ import Card from "../components/chat/Card";
 import List from "../components/chat/List";
 import Context from "../components/chat/Context";
 import Message from "../components/chat/Message";
+import { socket } from "../main";
 
 export default {
   name: "Chat",
@@ -34,6 +35,7 @@ export default {
     }
   },
   created() {},
+  mounted() {},
   methods: {}
 };
 </script>
