@@ -7,6 +7,7 @@ let state = {
     },
     sessions: [], //链接的列表
     currentId: '', // 选中当前的id
+    messages: [], // 聊天记录
 }
 
 let mutations = {
@@ -16,6 +17,9 @@ let mutations = {
     setCurrentId(state, data) {
         state.currentId = data
     },
+    saveHistory(state, data) {
+        state.messages.push(data)
+    }
 }
 
 let actions = {}
@@ -27,6 +31,9 @@ let getters = {
     currentId: state => {
         return state.currentId
     },
+    messages: state => {
+        return state.messages
+    }
 }
 
 export default {

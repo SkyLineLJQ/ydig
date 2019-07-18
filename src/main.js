@@ -7,8 +7,8 @@ import VueSocketIO from 'vue-socket.io'
 
 Vue.config.productionTip = false
 
-// let ip = "127.0.0.1"; // !!!!!!!!!!!!!   该地址为调试地址  随时记得要更换 !!!!!!!!!!!!
-let ip = "192.168.3.188"; // !!!!!!!!!!!!!   该地址为调试地址  随时记得要更换 !!!!!!!!!!!!
+let ip = "127.0.0.1"; // !!!!!!!!!!!!!   该地址为调试地址  随时记得要更换 !!!!!!!!!!!!
+//let ip = "192.168.3.188"; // !!!!!!!!!!!!!   该地址为调试地址  随时记得要更换 !!!!!!!!!!!!
 let socket = io("http://" + ip + ":3000");// 连接socket 
 
 Vue.use(new VueSocketIO({

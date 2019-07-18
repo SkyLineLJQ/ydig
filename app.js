@@ -13,6 +13,7 @@ io.on('connection', function (socket) {
         // console.log(io.eio.clientsCount) // 链接数量
         // console.log(socket.adapter.rooms) // 所有房间
         loginService.serverLogin(socket, io, UserList);
+        loginService.ChatMessages(socket, io);
         socket.on('disconnect', (reason) => {
             console.log('\033[41;33m '+new Date()+ socket.id + ' has Disconnected...'+'\033[0m');
             console.log(reason);
